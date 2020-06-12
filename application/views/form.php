@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/select2.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.css') ?>">
-<form action="<?= site_url($current['controller']) ?>" method="POST" class="main-form col-sm-12">
+<form action="<?= site_url($current['controller']) ?>" method="POST" class="main-form col-sm-12" enctype="multipart/form-data">
   <div class="card card-primary card-outline">
     <div class="card-body">
 
@@ -46,6 +46,14 @@
                     <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
                     <div class="col-sm-9">
                       <textarea class="form-control" name="<?= $field['name'] ?>" <?= $field['attr'] ?> ></textarea>
+                    </div>
+                  </div>
+              <?php break; ?>
+              <?php case 'file': ?>
+                  <div class="form-group row">
+                    <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
+                    <div class="col-sm-9">
+                      <input accept="image/*" capture class="form-control" type="<?= $field['type'] ?>" value="<?= htmlentities($field['value']) ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
                     </div>
                   </div>
               <?php break; ?>
