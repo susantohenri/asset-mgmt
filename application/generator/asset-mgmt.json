@@ -1,0 +1,90 @@
+[
+
+	{
+		"controller": "Asset",
+		"fields": [
+			{
+				"name": "AssetCode",
+				"label": "Asset Code"
+			},
+			{
+				"name": "Name"
+			},
+			{
+				"name": "Model"
+			},
+			{
+				"name": "InvoiceNumber",
+				"label": "Invoice Number"
+			},
+			{
+				"name": "Category",
+				"type": "relation",
+				"model": "Categories",
+				"field": "Name"
+			},
+			{
+				"name": "DateAcquired",
+				"type": "date",
+				"label": "Date Acquired"
+			},
+			{
+				"name": "DateDisposed",
+				"type": "date",
+				"label": "Date Disposed"
+			},
+			{
+				"name": "DisposalMethod",
+				"type": "relation",
+				"model": "DisposalMethods",
+				"field": "Name",
+				"label": "Disposal Method"
+			},
+			{
+				"name": "PhotoOfItem",
+				"label": "Photo of Item"
+			},
+			{
+				"name": "PhotoOfSerialNumber",
+				"label": "Photo of Serial Number"
+			},
+			{
+				"name": "Location",
+				"type": "relation",
+				"model": "Locations",
+				"field": "Name"
+			},
+			{
+				"name": "Active",
+				"options": ["Yes", "No"]
+			},
+			{
+				"name": "Notes"
+			}
+		]
+	}
+	,{
+		"controller": "Category",
+		"fields": [
+			{
+				"name": "Name"
+			}
+		]
+	}
+	,{
+		"controller": "DisposalMethod",
+		"fields": [
+			{
+				"name": "Name"
+			}
+		]
+	}
+	,{
+		"controller": "Location",
+		"fields": [
+			{
+				"name": "Name"
+			}
+		]
+	}
+]

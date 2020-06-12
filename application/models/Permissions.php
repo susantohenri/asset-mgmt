@@ -14,6 +14,10 @@ class Permissions extends MY_Model {
           array ('text' => 'User', 'value' => 'User'),
           array ('text' => 'Role', 'value' => 'Role'),
           array ('text' => 'Permission', 'value' => 'Permission'),
+          array ('text' => 'Asset', 'value' => 'Asset'),
+          array ('text' => 'Category', 'value' => 'Category'),
+          array ('text' => 'DisposalMethod', 'value' => 'DisposalMethod'),
+          array ('text' => 'Location', 'value' => 'Location'),
           /*additionalEntity*/
         ),
         'width' => 4
