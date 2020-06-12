@@ -66,12 +66,14 @@ class Assets extends MY_Model {
 		        array('data-field' => 'Name')
 			    )),
         array (
-				      'name' => 'PhotoOfItem',
+					  'name' => 'PhotoOfItem',
+					  'type' => 'file',
 				      'width' => 2,
 		      		'label'=> 'Photo of Item',
 					  ),
         array (
 				      'name' => 'PhotoOfSerialNumber',
+					  'type' => 'file',
 				      'width' => 2,
 		      		'label'=> 'Photo of Serial Number',
 					  ),
@@ -112,4 +114,38 @@ class Assets extends MY_Model {
     return parent::dt();
   }
 
+  function save ($record) {
+    foreach ($record as $field => &$value) {
+      if (is_array($value)) $value = implode(',', $value);
+      else if (strpos($value, '[comma-replacement]') > -1) $value = str_replace('[comma-replacement]', ',', $value);
+    }
+
+	foreach (array('PhotoOfItem', 'PhotoOfSerialNumber') as $field_name) {
+		if (!self::fileUploadIsEmpty ($field_name)) $record[$field_name] = self::saveFile ($field_name, $record['AssetCode']);
+	}
+
+	return isset ($record['uuid']) ? $this->update($record) : $this->create($record);
+  }
+
+  private function fileUploadIsEmpty ($field_name) {
+	  return strlen ($_FILES[$field_name]['name']) < 1;
+  }
+
+  private function getFileExtension ($field_name) {
+	  return strtolower (pathinfo ($_FILES[$field_name]['name'], PATHINFO_EXTENSION));
+  }
+
+  private function fileIsPhoto ($field_name) {
+	  if (getimagesize ($_FILES[$field_name]['tmp_name'])) return true;
+	  else return false;
+  }
+
+  private function saveFile ($field_name, $asset_code) {
+	  if (!$this->fileIsPhoto ($field_name)) return false;
+	  $extension = self::getFileExtension ($field_name);
+	  $new_file_location = "photos/{$field_name}_{$asset_code}.{$extension}";
+	  if (file_exists ($new_file_location)) unlink ($new_file_location);
+	  move_uploaded_file($_FILES[$field_name]['tmp_name'], $new_file_location);
+	  return $new_file_location;
+  }
 }
