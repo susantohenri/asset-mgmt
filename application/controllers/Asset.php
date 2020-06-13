@@ -58,6 +58,18 @@ class Asset extends MY_Controller {
 	  }
 
 	  function pdf () {
+		$this->load->library('pdf');
+		$this->pdf->setPaper('A4', 'potrait');
+		$this->pdf->filename = 'Export-Assets.pdf';
 
+		$data = array ('records' => $this->Assets->pdf ());
+		// $this->pdf->load_view('pdf', $data);
+
+		$this->load->view('pdf', $data);
+		$html = $this->output->get_output();
+		$this->pdf->load_html($html);
+
+		$this->pdf->render();
+		$this->pdf->stream('Export-Assets.pdf');
 	  }
 }

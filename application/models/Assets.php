@@ -106,7 +106,7 @@ class Assets extends MY_Model {
     );
   }
 
-  function csv ($param = array()) {
+  function csv () {
 	  $fields = array ('AssetCode', 'Name', 'Model', 'InvoiceNumber', 'Category', 'DateAcquired', 'DateDisposed', 'DisposalMethod', 'Location', 'Active', 'Notes');
 	  $records= $this->db
 		  ->select ("
@@ -130,6 +130,31 @@ class Assets extends MY_Model {
 		  ->result_array();
 
 	  return array_merge (array ($fields), $records);
+  }
+
+  function pdf () {
+	return $this->db
+		->select ("
+			AssetCode,
+			Asset.Name,
+			Model,
+			InvoiceNumber,
+			Category.Name AS Category,
+			DateAcquired,
+			DateDisposed,
+			DisposalMethod.Name AS DisposalMethod,
+			Location.Name AS Location,
+			Active,
+			Notes,
+			PhotoOfItem,
+			PhotoOfSerialNumber
+		")
+		->from ('asset')
+		->join ('Category', 'Category.uuid = Asset.Category', 'LEFT')
+		->join ('DisposalMethod', 'DisposalMethod.uuid = Asset.DisposalMethod', 'LEFT')
+		->join ('Location', 'Location.uuid = Asset.Location', 'LEFT')
+		->get()
+		->result();
   }
 
   function dt () {
