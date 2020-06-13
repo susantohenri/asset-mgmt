@@ -42,4 +42,22 @@ class Asset extends MY_Controller {
 		);
 		$this->loadview('index', $vars);
 	  }
+
+	  function excel () {
+		$filename = 'Export-Assets.csv';
+		$delimiter = ',';
+		$array = $this->Assets->csv();
+		$f = fopen('php://memory', 'w');
+		foreach ($array as $line) { 
+			fputcsv($f, $line, $delimiter); 
+		}
+		fseek($f, 0);
+		header('Content-Type: application/csv');
+		header('Content-Disposition: attachment; filename="'.$filename.'";');
+		fpassthru($f);
+	  }
+
+	  function pdf () {
+
+	  }
 }
