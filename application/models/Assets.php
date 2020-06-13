@@ -7,8 +7,19 @@ class Assets extends MY_Model {
     $this->table = 'asset';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-      (object) array('mData' => 'AssetCode', 'sTitle' => 'Asset Code'),
-
+      (object) array('mData' => 'Name', 'sTitle' => 'Name'),
+	  (object) array('mData' => 'AssetCode', 'visible' => false),
+	  (object) array('mData' => 'Model', 'visible' => false),
+	  (object) array('mData' => 'InvoiceNumber', 'visible' => false),
+	  (object) array('mData' => 'Category', 'visible' => false),
+	  (object) array('mData' => 'DateAcquired', 'visible' => false),
+	  (object) array('mData' => 'DateDisposed', 'visible' => false),
+	  (object) array('mData' => 'DisposalMethod', 'visible' => false),
+	  (object) array('mData' => 'PhotoOfItem', 'visible' => false),
+	  (object) array('mData' => 'PhotoOfSerialNumber', 'visible' => false),
+	  (object) array('mData' => 'Location', 'visible' => false),
+	  (object) array('mData' => 'Active', 'visible' => false),
+	  (object) array('mData' => 'Notes', 'visible' => false)
     );
     $this->form = array (
         array (
@@ -161,7 +172,23 @@ class Assets extends MY_Model {
     $this->datatables
       ->select("{$this->table}.uuid")
       ->select("{$this->table}.orders")
-      ->select('asset.AssetCode');
+	  ->select("{$this->table}.AssetCode")
+	  ->select("{$this->table}.Name")
+	  ->select("{$this->table}.Model")
+	  ->select("{$this->table}.InvoiceNumber")
+	  ->select("Category.Name AS Category", false)
+	  ->select("{$this->table}.DateAcquired")
+	  ->select("{$this->table}.DateDisposed")
+	  ->select("DisposalMethod.Name AS DisposalMethod", false)
+	  ->select("{$this->table}.PhotoOfItem")
+	  ->select("{$this->table}.PhotoOfSerialNumber")
+	  ->select("Location.Name AS Location", false)
+	  ->select("{$this->table}.Active")
+	  ->select("{$this->table}.Notes")
+	  ->join ('Category', 'Category.uuid = Asset.Category', 'LEFT')
+	  ->join ('DisposalMethod', 'DisposalMethod.uuid = Asset.DisposalMethod', 'LEFT')
+	  ->join ('Location', 'Location.uuid = Asset.Location', 'LEFT')
+	  ;
     return parent::dt();
   }
 
