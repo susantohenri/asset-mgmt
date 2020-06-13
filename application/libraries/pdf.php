@@ -20,7 +20,7 @@ class Pdf extends Dompdf{
     public $filename;
     public function __construct(){
         parent::__construct();
-        $this->filename = "laporan.pdf";
+        $this->filename = "Export-Assets.pdf";
     }
     /**
      * Get an instance of CodeIgniter
