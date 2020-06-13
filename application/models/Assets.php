@@ -122,21 +122,21 @@ class Assets extends MY_Model {
 	  $records= $this->db
 		  ->select ("
 			AssetCode,
-			Asset.Name,
+			asset.Name,
 			Model,
 			InvoiceNumber,
-			Category.Name AS Category,
+			category.Name AS Category,
 			DateAcquired,
 			DateDisposed,
-			DisposalMethod.Name AS DisposalMethod,
-			Location.Name AS Location,
+			disposalmethod.Name AS DisposalMethod,
+			location.Name AS Location,
 			Active,
 			Notes
 		  ")
 		  ->from ('asset')
-		  ->join ('Category', 'Category.uuid = Asset.Category', 'LEFT')
-		  ->join ('DisposalMethod', 'DisposalMethod.uuid = Asset.DisposalMethod', 'LEFT')
-		  ->join ('Location', 'Location.uuid = Asset.Location', 'LEFT')
+		  ->join ('category', 'category.uuid = asset.Category', 'LEFT')
+		  ->join ('disposalmethod', 'disposalmethod.uuid = asset.DisposalMethod', 'LEFT')
+		  ->join ('location', 'location.uuid = asset.Location', 'LEFT')
 		  ->get()
 		  ->result_array();
 
@@ -147,23 +147,23 @@ class Assets extends MY_Model {
 	return $this->db
 		->select ("
 			AssetCode,
-			Asset.Name,
+			asset.Name,
 			Model,
 			InvoiceNumber,
-			Category.Name AS Category,
+			category.Name AS Category,
 			DateAcquired,
 			DateDisposed,
-			DisposalMethod.Name AS DisposalMethod,
-			Location.Name AS Location,
+			disposalmethod.Name AS DisposalMethod,
+			location.Name AS Location,
 			Active,
 			Notes,
 			PhotoOfItem,
 			PhotoOfSerialNumber
 		")
 		->from ('asset')
-		->join ('Category', 'Category.uuid = Asset.Category', 'LEFT')
-		->join ('DisposalMethod', 'DisposalMethod.uuid = Asset.DisposalMethod', 'LEFT')
-		->join ('Location', 'Location.uuid = Asset.Location', 'LEFT')
+		->join ('category', 'category.uuid = asset.Category', 'LEFT')
+		->join ('disposalmethod', 'disposalmethod.uuid = asset.DisposalMethod', 'LEFT')
+		->join ('location', 'location.uuid = asset.Location', 'LEFT')
 		->get()
 		->result();
   }
@@ -176,18 +176,18 @@ class Assets extends MY_Model {
 	  ->select("{$this->table}.Name")
 	  ->select("{$this->table}.Model")
 	  ->select("{$this->table}.InvoiceNumber")
-	  ->select("Category.Name AS Category", false)
+	  ->select("category.Name AS Category", false)
 	  ->select("{$this->table}.DateAcquired")
 	  ->select("{$this->table}.DateDisposed")
-	  ->select("DisposalMethod.Name AS DisposalMethod", false)
+	  ->select("disposalmethod.Name AS DisposalMethod", false)
 	  ->select("{$this->table}.PhotoOfItem")
 	  ->select("{$this->table}.PhotoOfSerialNumber")
-	  ->select("Location.Name AS Location", false)
+	  ->select("location.Name AS Location", false)
 	  ->select("{$this->table}.Active")
 	  ->select("{$this->table}.Notes")
-	  ->join ('Category', 'Category.uuid = Asset.Category', 'LEFT')
-	  ->join ('DisposalMethod', 'DisposalMethod.uuid = Asset.DisposalMethod', 'LEFT')
-	  ->join ('Location', 'Location.uuid = Asset.Location', 'LEFT')
+	  ->join ('category', 'category.uuid = asset.Category', 'LEFT')
+	  ->join ('disposalmethod', 'disposalmethod.uuid = asset.DisposalMethod', 'LEFT')
+	  ->join ('location', 'location.uuid = asset.Location', 'LEFT')
 	  ;
     return parent::dt();
   }
