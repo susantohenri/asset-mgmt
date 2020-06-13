@@ -18,7 +18,7 @@ window.onload = function () {
     },
     fnRowCallback: function(nRow, aData, iDisplayIndex ) {
       $(nRow).css('cursor', 'pointer').click( function () {
-        if (!allow_read) return false
+        if (!allow_read || current_controller_url.indexOf('/Asset') > -1) return false
         else window.location.href = current_controller_url + '/read/' + aData.uuid
       })
     },
