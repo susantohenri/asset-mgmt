@@ -11,7 +11,7 @@ class Migration_asset extends CI_Migration {
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,
         `createdAt` datetime DEFAULT NULL,
         `updatedAt` datetime DEFAULT NULL,
-        `AssetCode` varchar(255) NOT NULL,
+        `AssetCode` varchar(255) UNIQUE NOT NULL,
         `Name` varchar(255) NOT NULL,
         `Model` varchar(255) NOT NULL,
         `InvoiceNumber` varchar(255) NOT NULL,
