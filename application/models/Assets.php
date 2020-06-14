@@ -169,6 +169,7 @@ class Assets extends MY_Model {
   }
 
   function dt () {
+	$this->datatables->where('Active', $this->input->post('Active'));
     $this->datatables
       ->select("{$this->table}.uuid")
       ->select("{$this->table}.orders")

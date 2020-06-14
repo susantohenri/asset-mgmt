@@ -72,4 +72,17 @@ class Asset extends MY_Controller {
 		$this->pdf->render();
 		$this->pdf->stream('Export-Assets.pdf');
 	  }
+
+	  function html () {
+		$data['records'] = array_map (function ($record) {
+			if (strlen ($record->PhotoOfItem) && '0' !== $record->PhotoOfItem) {
+				$record->PhotoOfItem = base_url ($record->PhotoOfItem);
+			}
+			if (strlen ($record->PhotoOfSerialNumber) && '0' !== $record->PhotoOfSerialNumber) {
+				$record->PhotoOfSerialNumber = base_url ($record->PhotoOfSerialNumber);
+			}
+			return $record;
+		}, $this->Assets->pdf ());
+		$this->load->view('pdf', $data);
+	  }
 }

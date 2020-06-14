@@ -6,8 +6,16 @@
         <?php if (in_array("create_{$current['controller']}", $permission)) : ?>
         <div class="col-sm-12 text-right">
             <?php if ('Asset' === $current['controller']): ?>
+                <label>Item Status</label>
+                <select id="filter_asset_status">
+                    <option value="Yes">Active</option>
+                    <option value="No">Inactive</option>
+                </select>
                 <a href="<?= site_url($current['controller'] . '/scan') ?>" class="btn btn-primary">
                     Add / Edit <?= $page_title ?>
+                </a>
+                <a href="<?= site_url($current['controller'] . '/html') ?>" class="btn btn-danger" target="_blank">
+                    Export HTML
                 </a>
                 <a href="<?= site_url($current['controller'] . '/pdf') ?>" class="btn btn-info">
                     Export PDF
