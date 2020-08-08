@@ -4,8 +4,7 @@ $json = $argv[1];
 $toGenerate = $argv[2] ?: 'all';
 $structure = json_decode(file_get_contents($json));
 
-if (in_array($toGenerate, array('all', 'migration')))
-{
+if (in_array($toGenerate, array('all', 'migration'))) {
 	// COLLECT MIGRATION INDEX
 	$existingMigrations = scandir('../migrations');
 	$seeds = $latestMigration = end($existingMigrations);
@@ -21,8 +20,7 @@ if (in_array($toGenerate, array('all', 'migration')))
 	// GIVE PERMISSION FOR ALL ENTITIES TO ADMIN
 	$seedsTmp = $newSeeds;
 	$seedsContent = file_get_contents($seedsTmp);
-	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
-	{
+	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName) {
 		$seedsContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $seedsContent);
 	}
 	file_put_contents($newSeeds, $seedsContent);
@@ -32,34 +30,33 @@ if (in_array($toGenerate, array('all', 'migration')))
 	*/
 	$permissionModel = '../models/Permissions.php';
 	$permissionModelContent = file_get_contents($permissionModel);
-	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
-	{
-		$permissionModelContent = str_replace('/*additionalEntity*/',
-			"array ('text' => '{$entityName}', 'value' => '{$entityName}'),\n          /*additionalEntity*/", $permissionModelContent);
+	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName) {
+		$permissionModelContent = str_replace(
+			'/*additionalEntity*/',
+			"array ('text' => '{$entityName}', 'value' => '{$entityName}'),\n          /*additionalEntity*/",
+			$permissionModelContent
+		);
 	}
 	file_put_contents($permissionModel, $permissionModelContent);
 }
 
-foreach ($structure as $entity)
-{
+foreach ($structure as $entity) {
 
 	/*
 		SET DEFAULT VALUES TO SIMPLIFY JSON
 	*/
 	$entity->model = $entity->model ?: "{$entity->controller}s";
 	$entity->table = $entity->table ?: strtolower($entity->controller);
-	foreach ($entity->fields as $index => $field)
-	{
+	foreach ($entity->fields as $index => $field) {
 		$entity->fields[$index]->type = $field->type ?: 'string';
 		$entity->fields[$index]->label = $field->label ?: ucfirst($field->name);
-		$entity->fields[$index]->index= 'relation' === $field->type;
+		$entity->fields[$index]->index = 'relation' === $field->type;
 	}
 
 	/*
 		GENERATING CONTROLLER
 	*/
-	if (in_array($toGenerate, array('all', 'controller')))
-	{
+	if (in_array($toGenerate, array('all', 'controller'))) {
 		$controllerTmp = 'Controller.php';
 		$controllerContent = file_get_contents($controllerTmp);
 		$controllerContent = str_replace('{{controllerName}}', $entity->controller, $controllerContent);
@@ -70,8 +67,7 @@ foreach ($structure as $entity)
 	/*
 		GENERATING MODEL
 	*/
-	if (in_array($toGenerate, array('all', 'model')))
-	{
+	if (in_array($toGenerate, array('all', 'model'))) {
 		$modelTmp = 'Model.php';
 		$modelContent = file_get_contents($modelTmp);
 		$modelContent = str_replace('{{modelName}}', $entity->model, $modelContent);
@@ -79,10 +75,10 @@ foreach ($structure as $entity)
 
 		$fields = '';
 		$theads = "(object) array('mData' => '{$entity->fields[0]->name}', 'sTitle' => '{$entity->fields[0]->label}'),\n";
-		$dtField= "->select('{$entity->table}.{$entity->fields[0]->name}')";
+		$dtField = "->select('{$entity->table}.{$entity->fields[0]->name}')";
 		foreach ($entity->fields as $field) {
-			if (isset ($field->form) && false === $field->form) continue;
-			$field->width = $field->width ? : 2;
+			if (isset($field->form) && false === $field->form) continue;
+			$field->width = $field->width ?: 2;
 			switch ($field->type) {
 				case 'relation':
 					$fields .= "\n        array (
@@ -96,8 +92,8 @@ foreach ($structure as $entity)
 		        array('data-field' => '{$field->field}')
 			    )),";
 					break;
-				case 'int': 
-			    $fields .= "\n        array (
+				case 'int':
+					$fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
 		      'width' => {$field->width},
@@ -106,7 +102,7 @@ foreach ($structure as $entity)
 			    )),";
 					break;
 				case 'date':
-			    $fields .= "\n        array (
+					$fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
 		      'width' => {$field->width},
@@ -115,7 +111,7 @@ foreach ($structure as $entity)
 			    )),";
 					break;
 				case 'datetime':
-			    $fields .= "\n        array (
+					$fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
 		      'width' => {$field->width},
@@ -123,25 +119,22 @@ foreach ($structure as $entity)
 		        array('data-date' => 'datetimepicker')
 			    )),";
 					break;
-				case 'string': 
+				case 'string':
 				default:
-					if (isset($field->options))
-					{
+					if (isset($field->options)) {
 						$options = '';
 						foreach ($field->options as $option) {
 							$options .= "\n                array('text' => '{$option}', 'value' => '{$option}'),";
 						}
-					  $fields .= "\n        array (
+						$fields .= "\n        array (
 				      'name' => '{$field->name}',
 				      'label'=> '{$field->label}',
 				      'width' => {$field->width},
 		      		'options' => array({$options}
 				      )
 					  ),";
-					}
-					else
-					{
-					  $fields .= "\n        array (
+					} else {
+						$fields .= "\n        array (
 				      'name' => '{$field->name}',
 				      'width' => {$field->width},
 		      		'label'=> '{$field->label}',
@@ -152,8 +145,7 @@ foreach ($structure as $entity)
 		}
 
 		$childs = '';
-		if ($entity->childs) foreach ($entity->childs as $child)
-		{
+		if ($entity->childs) foreach ($entity->childs as $child) {
 			$child->model = $child->model ?: "{$child->controller}s";
 			$childs .= "\n        array (
 				      'label' => '{$child->label}',
@@ -172,8 +164,7 @@ foreach ($structure as $entity)
 	/*
 		GENERATING MIGRATION
 	*/
-	if (in_array($toGenerate, array('all', 'migration')))
-	{
+	if (in_array($toGenerate, array('all', 'migration'))) {
 		$entity->migration = str_replace("_", '}}', $entity->table);
 		$migrationTmp = 'Migration.php';
 		$migrationContent = file_get_contents($migrationTmp);
@@ -183,22 +174,30 @@ foreach ($structure as $entity)
 		$fields = '';
 		$indexes = '';
 		foreach ($entity->fields as $field) {
-			if (true === $field->index)
-			{
+			if (true === $field->index) {
 				$indexes .= ",\n        KEY `{$field->name}` (`{$field->name}`)";
 			}
 			switch ($field->type) {
-				case 'date': 
+				case 'date':
 					$fields .= "\n        `{$field->name}` DATE NOT NULL,";
 					break;
-				case 'datetime': 
+				case 'datetime':
 					$fields .= "\n        `{$field->name}` DATETIME NOT NULL,";
 					break;
-				case 'int': 
+				case 'number':
+				case 'int':
 					$fields .= "\n        `{$field->name}` INT(11) NOT NULL,";
 					break;
-				case 'string': 
-				default: $fields .= "\n        `{$field->name}` varchar(255) NOT NULL,";
+				case 'tinyint':
+					$fields .= "\n        `{$field->name}` TINYINT(2) NOT NULL,";
+					break;
+				case 'boolean':
+					$fields .= "\n        `{$field->name}` TINYINT(1) NOT NULL,";
+					break;
+				case 'string':
+				default:
+					$length = $field->index ? 36 : 255;
+					$fields .= "\n        `{$field->name}` varchar({$length}) NOT NULL,";
 					break;
 			}
 		}

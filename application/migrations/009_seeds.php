@@ -17,7 +17,7 @@ class Migration_seeds extends CI_Migration {
           'entity' => $entity
         ));
       }
-      $this->Menus->create(array(
+      if (!in_array($entity, array ('Menu', 'Permission', 'Role'))) $this->Menus->create(array(
         'role' => $admin,
         'name' => $entity,
         'url' => $entity,

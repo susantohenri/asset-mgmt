@@ -7,14 +7,16 @@ class Migration_permission extends CI_Migration {
 
     $this->db->query("
       CREATE TABLE `permission` (
-        `uuid` varchar(255) NOT NULL,
+        `uuid` varchar(36) NOT NULL,
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,
-        `role` varchar(255) NOT NULL,
-        `entity` varchar(255) NOT NULL,
+        `role` varchar(36) NOT NULL,
+        `entity` varchar(36) NOT NULL,
         `action` varchar(255) NOT NULL,
         `createdAt` datetime DEFAULT NULL,
         `updatedAt` datetime DEFAULT NULL,
-        PRIMARY KEY (`uuid`)
+        PRIMARY KEY (`uuid`),
+        KEY `entity` (`entity`),
+        KEY `role` (`role`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
 

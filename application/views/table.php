@@ -29,20 +29,19 @@
             </a>
             <?php endif ?>
         </div>
-        <br>
-        <?php endif ?>
+        <div class="card-body">
 
-        <table class="table table-bordered table-striped datatable table-model">
-            <tfoot>
-                <tr>
-                </tr>
-            </tfoot>
-        </table>
+            <table class="table table-bordered table-striped datatable table-model">
+                <tfoot>
+                    <tr>
+                    </tr>
+                </tfoot>
+            </table>
 
-      </div>
+        </div>
     </div><!-- /.card -->
 </div>
 <script type="text/javascript">
-    var thead = <?= json_encode ($thead) ?>;
-    var allow_read = <?= in_array("read_{$current['controller']}", $permission) ?>
+    var thead = <?= json_encode($thead) ?>;
+    var allow_read = <?= in_array("read_{$current['controller']}", $permission) ? 1 : 0 ?>
 </script>

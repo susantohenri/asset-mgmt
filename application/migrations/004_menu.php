@@ -7,15 +7,16 @@ class Migration_menu extends CI_Migration {
 
     $this->db->query("
       CREATE TABLE `menu` (
-        `uuid` varchar(255) NOT NULL,
+        `uuid` varchar(36) NOT NULL,
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,
-        `role` varchar(255) NOT NULL,
+        `role` varchar(36) NOT NULL,
         `name` varchar(255) NOT NULL,
         `url` varchar(255) NOT NULL,
         `icon` varchar(255) NOT NULL,
         `createdAt` datetime DEFAULT NULL,
         `updatedAt` datetime DEFAULT NULL,
-        PRIMARY KEY (`uuid`)
+        PRIMARY KEY (`uuid`),
+        KEY `role` (`role`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
 

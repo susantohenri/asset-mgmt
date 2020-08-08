@@ -7,7 +7,7 @@ class Migration_role extends CI_Migration {
 
     $this->db->query("
       CREATE TABLE `role` (
-        `uuid` varchar(255) NOT NULL,
+        `uuid` varchar(36) NOT NULL,
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL,
         `createdAt` datetime DEFAULT NULL,
