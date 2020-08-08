@@ -46,14 +46,25 @@
                   <div class="col-sm-9">
                     <textarea class="form-control" name="<?= $field['name'] ?>" <?= $field['attr'] ?>></textarea>
                   </div>
-                </div>
-                <?php break; ?>
-              <?php
-              default: ?>
-                <div class="form-group row">
-                  <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
-                  <div class="col-sm-9">
-                    <input class="form-control" type="<?= $field['type'] ?>" value="<?= htmlentities($field['value']) ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
+              <?php break; ?>
+              <?php case 'file': ?>
+                  <div class="form-group row">
+                    <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
+                    <div class="col-sm-9">
+                      <?php if (strlen ($field['value']) > 0 && '0' !== $field['value']): ?>
+                        <img src="<?= base_url($field['value']) ?>" height="100" width="100">
+                        <a href="<?= base_url($field['value']) ?>" target="_blank" class="btn btn-info">open in new tab</a>
+                      <?php endif ?>
+                      <input accept="image/*" capture class="form-control" type="<?= $field['type'] ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
+                    </div>
+                  </div>
+              <?php break; ?>
+              <?php default: ?>
+                  <div class="form-group row">
+                    <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
+                    <div class="col-sm-9">
+                      <input class="form-control" type="<?= $field['type'] ?>" value="<?= htmlentities($field['value']) ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
+                    </div>
                   </div>
                 </div>
                 <?php break; ?>
