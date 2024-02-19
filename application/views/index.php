@@ -11,12 +11,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <title>PrototypeApp</title>
 
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
-  <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css') ?>">
-  <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
   <style type="text/css">
     a.btn:not([href]):not([tabindex]){color: white}
     .form-child .form-group.row > div {margin: 5px 0}
@@ -29,8 +27,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <nav class="main-header navbar navbar-expand navbar-light navbar-white">
     <div class="container">
       <a href="<?= base_url() ?>" class="navbar-brand">
-        <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8"> -->
         <H2><span class="brand-text font-weight-light"><b>Prototype</b>App</span></H2>
       </a>
       <a href="<?= site_url('Login/Logout') ?>">Logout</a>

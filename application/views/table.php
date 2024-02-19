@@ -29,6 +29,7 @@
             </a>
             <?php endif ?>
         </div>
+        <?php endif ?>
         <div class="card-body">
 
             <table class="table table-bordered table-striped datatable table-model">
